@@ -1,0 +1,84 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>[[#{plantilla.titulo}]]</title>
+    <link rel="stylesheet" href="/img/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+</head>
+<body>
+    <style>
+
+        table {
+            width: 70%;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+
+        }
+        th {
+            background-color: black;
+            color: white;
+        }
+        th,td,table{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+
+    <div th:replace="layout/navegacion :: navbar"></div>
+
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: calc(65vh - 200px);">
+            <h1 class="text-center mb-3  bg-danger">[[#{plantilla.titulo}]]</h1>
+        </div>
+    </div>
+
+
+      <div style="margin-left: 20px;">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">[[#{estudiante.nombre}]]</th>
+                    <th scope="col">[[#{estudiante.apellido}]]</th>
+                    <th scope="col">[[#{estudiante.email}]]</th>
+                    <th scope="col">[[#{estudiante.carrera}]]</th>
+                    <th scope="col">[[#{estudiante.fecha}]]</th>
+                    <th scope="col" sec:authorize="hasAuthority('CREATE')">[[#{estudiante.editar}]]</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estudiante : ${estudiantes}">
+                    <h5 th:if="${nombreBuscado}" class="text-success mb-3">[[#{estudiante.resultado}]] "<span th:text="${nombreBuscado}"></span>"</h5>
+                    <td th:text="${estudiante.nombre}">Nombre</td>
+                    <td th:text="${estudiante.apellido}">Apellido</td>
+                    <td th:text="${estudiante.email}">Email</td>
+                    <td th:text="${estudiante.carrera}">Carrera</td>
+                    <td th:text="${estudiante.fechaIncripcio}">fecha</td>
+                    <td>
+                            <a sec:authorize="hasAuthority('UPDATE')" th:href="@{/editar/{id}(id=${estudiante.id})}" class="btn btn-sm btn-warning me-1">[[#{estudiante.editar}]]</a>
+
+                            <a sec:authorize="hasAuthority('DELETE')" th:href="@{/eliminar/{id}(id=${estudiante.id})}" class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Estás seguro que quieres eliminar este estudiante?');">[[#{estudiante.eliminar}]]</a>
+                    </td>
+                  </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(estudiantes)}" class="text-center mt-3">
+        <p class="alert alert-warning">[[#{estudiante.vacio}]]</p>
+    </div>
+    <div class="d-flex align-items-center justify-content-end mt-3 me-5">
+        <img src="/img/estudiante.jpeg" alt="Usuario" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 10px;">
+        <span class="fw-bold fs-5 text-danger">[[#{estudiante.registrado}]] <span th:text="${estudiantes.size()}">0</span></span>
+    </div>
+
+
+     <footer th:replace="layout/pie-pagina :: pie"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>

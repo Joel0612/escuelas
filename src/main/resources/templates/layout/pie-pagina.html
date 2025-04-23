@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" html xmlns:th="http://www.thymeleaf.org"
+xmlns="http://www.w3.org/1999/xhtml"
+  >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pie Pagina</title>
+</head>
+<body>
+    <footer th:fragment="pie">
+        <nav class="navbar navbar-expand-lg bg-danger navbar-dark fixed-bottom w-100">
+            <div class="container-fluid">
+                <p class="text-white m-0">[[#{accion.pie}]]</p>
+                  <a th:href="@{/(lang=es)}">ES</a> |
+                  <a th:href="@{/(lang=en)}">EN</a> |    
+                   
+                  <form method="POST" th:action="@{/logout}">
+                    <a href="#" onclick="this.parentNode.submit();">Logout</a>
+                </form>
+            </div>
+        </nav>
+    </footer>
+</body>
+</html>
